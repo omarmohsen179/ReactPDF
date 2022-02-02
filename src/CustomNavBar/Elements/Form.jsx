@@ -1,11 +1,17 @@
 import React from "react";
 
-function Form({ data, Submit, placeholder, handleChange }) {
+function Form({ data, Submit, placeholder, handleChange, Add, IdKey }) {
   return (
-    <form>
-      <div class="form-group">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        Submit();
+      }}
+    >
+      <div className="form-group">
         <input
-          type="Note"
+          type="text"
           className="form-control form-input-placeholder"
           placeholder={placeholder}
           value={data.Text}
@@ -18,13 +24,19 @@ function Form({ data, Submit, placeholder, handleChange }) {
       <button
         type="submit"
         //    style={{ backgroundColor: "#eeeeee" }}
-        onClick={(e) => {
-          e.preventDefault();
-          Submit();
-        }}
-        class="btn btn-light submit-note-section"
+
+        className="btn btn-light submit-note-section"
       >
-        Add
+        Submit
+      </button>
+      <button
+        type="button"
+        //    style={{ backgroundColor: "#eeeeee" }}
+        onClick={Add}
+        disabled={data[IdKey] == 0}
+        className="btn btn-light submit-note-section"
+      >
+        New
       </button>
     </form>
   );

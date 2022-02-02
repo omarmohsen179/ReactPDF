@@ -8,38 +8,33 @@ import { useCallback, useState } from "react";
 import pdfx from "./pdf.pdf";
 function App() {
   const [pdf, setpdf] = useState(sampleBase64pdf);
-  const [Questions, setQuestions] = useState({
-    data: [
-      {
-        Id: 1,
-        Text: "Vestibulum neque massa, scelerisque sit amet ligula eu, congue molestie mi. Praesent utvarius sem. Nullam at porttitor arcu, nec lacinia nisi. Ut ac dolor vitae odio interdu",
-      },
-      { Id: 2, Text: "Question 2" },
-    ],
-    submit: () => {},
-  });
-  const [Notes, setNotes] = useState({
-    data: [
-      {
-        Id: 1,
-        Text: "Vestibulum neque massa, scelerisque sit amet ligula eu, congue molestie mi. Praesent utvarius sem. Nullam at porttitor arcu, nec lacinia nisi. Ut ac dolor vitae odio interdu",
-      },
-      { Id: 2, Text: "Note 2" },
-    ],
-    submit: () => {},
-  });
   const handleChangeQuestions = useCallback(async (value) => {
     setQuestions((prev) => {
       return { ...prev, data: value };
     });
   }, []);
+  const [Questions, setQuestions] = useState([
+    {
+      Id: 1,
+      Text: "Vestibulum neque massa, scelerisque sit amet ligula eu, congue molestie mi. Praesent utvarius sem. Nullam at porttitor arcu, nec lacinia nisi. Ut ac dolor vitae odio interdu",
+    },
+    { Id: 2, Text: "Question 2" },
+  ]);
+  const [Notes, setNotes] = useState([
+    {
+      Id: 1,
+      Text: "Vestibulum neque massa, scelerisque sit amet ligula eu, congue molestie mi. Praesent utvarius sem. Nullam at porttitor arcu, nec lacinia nisi. Ut ac dolor vitae odio interdu",
+    },
+    { Id: 2, Text: "Note 2" },
+  ]);
+
   return (
     <div>
       {/* <Main pdf={sampleBase64pdf} />*/}
       <CustomNavBar
         pdf={pdf}
-        Notes={Notes}
-        Questions={Questions}
+        NotesD={Notes}
+        QuestionsD={Questions}
         handleChangeQuestions={handleChangeQuestions}
       />
     </div>

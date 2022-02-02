@@ -7,11 +7,26 @@ import "@react-pdf-viewer/toolbar/lib/styles/index.css";
 import "./index.css";
 import NoteSection from "./Components/NoteSection";
 import QuestionSection from "./Components/QuestionSection";
-function CustomNavBar({ pdf, Notes, Questions }) {
+function CustomNavBar({ pdf, NotesD, QuestionsD }) {
+  const [Questions, setQuestions] = React.useState([]);
+  const [Notes, setNotes] = React.useState([]);
+  const handleChangeQuestions = React.useCallback(async (value) => {
+    setQuestions(value);
+  }, []);
+  const handleChangeNotes = React.useCallback(async (value) => {
+    setNotes(value);
+  }, []);
+  React.useEffect(() => {
+    setNotes(NotesD);
+  }, [NotesD]);
+
+  React.useEffect(() => {
+    setQuestions(QuestionsD);
+  }, [QuestionsD]);
   const toolbarPluginInstance = toolbarPlugin();
-  const SideBar = React.useRef([
+  const SideBar = [
     {
-      content: <NoteSection Notes={Notes.data} submit={Notes.submit} />,
+      content: <NoteSection Notes={Notes} setData={handleChangeNotes} />,
       icon: (
         <Icon size={16}>
           <path d="M23.5,17a1,1,0,0,1-1,1h-11l-4,4V18h-6a1,1,0,0,1-1-1V3a1,1,0,0,1,1-1h21a1,1,0,0,1,1,1Z" />
@@ -23,7 +38,10 @@ function CustomNavBar({ pdf, Notes, Questions }) {
     },
     {
       content: (
-        <QuestionSection Questions={Questions.data} submit={Questions.submit} />
+        <QuestionSection
+          Questions={Questions}
+          setData={handleChangeQuestions}
+        />
       ),
       icon: (
         <svg
@@ -31,7 +49,7 @@ function CustomNavBar({ pdf, Notes, Questions }) {
           width="16"
           height="16"
           fill="currentColor"
-          class="bi bi-question-circle"
+          className="bi bi-question-circle"
           viewBox="0 0 16 16"
         >
           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -40,7 +58,7 @@ function CustomNavBar({ pdf, Notes, Questions }) {
       ),
       title: "Questions",
     },
-  ]);
+  ];
   const { renderDefaultToolbar, Toolbar } = toolbarPluginInstance;
   const transform = React.useCallback((slot) => {
     const { NumberOfPages } = slot;
@@ -67,7 +85,7 @@ function CustomNavBar({ pdf, Notes, Questions }) {
     renderToolbar,
 
     sidebarTabs: (defaultTabs) => {
-      defaultTabs = defaultTabs.concat(SideBar.current);
+      defaultTabs = defaultTabs.concat(SideBar);
       defaultTabs.splice(2, 1);
       return [...defaultTabs];
     },
@@ -87,7 +105,7 @@ function CustomNavBar({ pdf, Notes, Questions }) {
         style={{
           flex: 1,
           overflow: "hidden",
-          height: "80vh",
+          height: "100vh",
         }}
       >
         <Viewer fileUrl={pdf} plugins={[defaultLayoutPluginInstance]} />
